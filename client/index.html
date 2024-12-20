@@ -293,13 +293,21 @@
             const company = document.getElementById('company').value || data.company || 'Your Company';
             const additionalInfo = document.getElementById('additionalInfo').value || '';
 
+            console.log("data is : ",data);
+
+            const details = JSON.parse(localStorage.getItem('user'));
+
+            console.log("details is : ",details);
+
+
+
             const prompt = `Generate a professional cold email for an Indian college student with the following details:
-            Student Name: ${data.name}
-            College: ${data.college}
-            Branch: ${data.Branch}
-            Year of Study: ${data.Year}
+            Student Name: ${details.name}
+            College: ${details.college}
+            Branch: ${details.Branch}
+            Year of Study: ${details.Year}
             Years of Experience: ${experience}
-            Skills: ${data.Skills}
+            Skills: ${details.Skills}
             Company Name: ${company}
             Recipient's Name: ${recipientName}
             Recipient's Position: ${recipientPosition}
