@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up & Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 450px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 8px;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+        .skills-container {
+            width: 100%;
+        }
+        .skills-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        #skillInput {
+            flex: 1;
+        }
+        #addSkill {
+            background-color: #48bb78;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        #skillsList {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+        #skillsList li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #e2e8f0;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+        }
+        #skillsList li button {
+            background-color: #fc8181;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        button[type="submit"] {
+            background-color: #667eea;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button[type="submit"]:hover {
+            background-color: #5a67d8;
+            transform: translateY(-1px);
+        }
+        .toggle {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .toggle span {
+            color: #667eea;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .signup-fields {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="formTitle">Sign Up</h1>
+        <form id="authForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="signup-fields">
+                <div class="form-group">
+                    <label for="college">College</label>
+                    <input type="text" id="college" name="college">
+                </div>
+
+                <div class="form-group">
+                    <label for="branch">Branch</label>
+                    <input type="text" id="branch" name="branch">
+                </div>
+
+                <div class="form-group">
+                    <label for="year">Year of Study</label>
+                    <select id="year" name="year">
+                        <option value="">Select Year</option>
+                        <option value="1">1st Year</option>
+                        <option value="2">2nd Year</option>
+                        <option value="3">3rd Year</option>
+                        <option value="4">4th Year</option>
+                        <option value="5">5th Year</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="skills">Skills</label>
+                    <div class="skills-container">
+                        <div class="skills-input-group">
+                            <input type="text" id="skillInput" placeholder="Enter a skill">
+                            <button type="button" id="addSkill">Add Skill</button>
+                        </div>
+                        <ul id="skillsList"></ul>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="title">Job Title</label>
+                    <input type="text" id="title" name="title">
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn">Sign Up</button>
+            <div class="toggle">
+                <span id="toggleMode">Already have an account? Log In</span>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('authForm');
+        const formTitle = document.getElementById('formTitle');
+        const submitBtn = document.getElementById('submitBtn');
+        const toggleMode = document.getElementById('toggleMode');
+        const signupFields = document.querySelector('.signup-fields');
+        const skillInput = document.getElementById('skillInput');
+        const addSkillBtn = document.getElementById('addSkill');
+        const skillsList = document.getElementById('skillsList');
+
+        let isSignUp = true;
+        let skills = [];
+
+        function toggleFormMode() {
+            isSignUp = !isSignUp;
+            if (isSignUp) {
+                formTitle.textContent = 'Sign Up';
+                submitBtn.textContent = 'Sign Up';
+                toggleMode.textContent = "Already have an account? Log In";
+                signupFields.style.display = 'block';
+            } else {
+                formTitle.textContent = 'Log In';
+                submitBtn.textContent = 'Log In';
+                toggleMode.textContent = "Don't have an account? Sign Up";
+                signupFields.style.display = 'none';
+            }
+        }
+
+        function addSkill() {
+            const skill = skillInput.value.trim();
+            if (skill && !skills.includes(skill)) {
+                skills.push(skill);
+                updateSkillsList();
+                skillInput.value = '';
+            }
+        }
+
+        function removeSkill(skill) {
+            skills = skills.filter(s => s !== skill);
+            updateSkillsList();
+        }
+
+        function updateSkillsList() {
+            skillsList.innerHTML = '';
+            skills.forEach(skill => {
+                const li = document.createElement('li');
+                li.textContent = skill;
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'Remove';
+                removeBtn.onclick = () => removeSkill(skill);
+                li.appendChild(removeBtn);
+                skillsList.appendChild(li);
+            });
+        }
+
+        toggleMode.addEventListener('click', toggleFormMode);
+        addSkillBtn.addEventListener('click', addSkill);
+        skillInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addSkill();
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            let payload = {
+                username,
+                email,
+                password,
+                isSignUp
+            };
+
+            if (isSignUp) {
+                payload = {
+                    ...payload,
+                    college: document.getElementById('college').value,
+                    branch: document.getElementById('branch').value,
+                    year: document.getElementById('year').value,
+                    skills: skills,
+                    title: document.getElementById('title').value
+                };
+            }
+
+            try {
+                const response = await fetch('http://localhost:3000/api/auth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                console.log('Data:', data);
+                if (data.success) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    alert(data.message);
+                    console.log('User:', data.user);
+                    window.location.href = './index.html';
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            }
+        });
+    </script>
+</body>
+</html>
