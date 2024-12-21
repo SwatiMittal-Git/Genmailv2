@@ -310,6 +310,12 @@
             document.getElementById('userDetails').style.display = 'block';
         }
 
+        function signout() {
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            window.location.href = 'signin.html';
+        }
+
         function generateEmail(data) {
             const experience = document.getElementById('experience').value || 'N/A';
             const recipientName = document.getElementById('recipientName').value || data.recipient || 'Hiring Manager';
