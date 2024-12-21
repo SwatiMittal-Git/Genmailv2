@@ -320,13 +320,13 @@
             
             console.log('Prompt:', prompt);
 
-            
+            const apiKey = 'AIzaSyAz8stH7N5ErLg8A0mBgFVE49_ObcxSqYI';
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
             fetch(apiUrl, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'applicatwwion/json',
                 },
                 body: JSON.stringify({
                     contents: [{

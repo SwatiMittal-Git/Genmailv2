@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenMail - AI-Powered Email Communication</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: #0a0b14;
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 4rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            /* background: #0066ff; */
+            /* padding: 0.5rem; */
+            border-radius: 8px;
+            height: 55px;
+            width: 55px;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            /* Make the image take the full width of the container */
+            height: 100%;
+            /* Make the image take the full height of the container */
+            object-fit: cover;
+            /* Ensure the image covers the container without distortion */
+            border-radius: 9px;
+            /* Optional: to match the border radius of the container */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #0066ff;
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: none;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 8rem 2rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #0066ff, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: #a0a0a0;
+            margin-bottom: 2.5rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn-cta {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-demo {
+            background: white;
+            color: #0a0b14;
+        }
+
+        .features-section {
+            text-align: center;
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-section h2 {
+            font-size: 3.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: left;
+        }
+
+        .feature-icon {
+            background: rgba(255, 255, 255, 0.1);
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon svg {
+            width: 32px;
+            height: 32px;
+            color: #0066ff;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: #a0a0a0;
+            line-height: 1.6;
+        }
+
+        .transform-section {
+            text-align: center;
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .transform-section h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .transform-section p {
+            font-size: 1.25rem;
+            color: #a0a0a0;
+            margin-bottom: 2.5rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .nav-links a:hover {
+            color: #0c326c;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .transform-section h2 {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+
+        .footer {
+            background-color: rgba(255, 255, 255, 0.02);
+            padding: 4rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #a0a0a0;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #a0a0a0;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            color: #a0a0a0;
+            transition: color 0.2s ease;
+        }
+
+        .social-links a:hover {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <span class="logo-icon"><img src="./logo_genmail.jpg"></span>
+            GenMail
+        </a>
+        <div class="nav-links">
+          
+            <a href="#contact">Contact Us</a>
+            <a href="#pricing">Job Portal</a>
+            <a href="#features">Features</a>         
+              <a href="FAQ.html">FAQ's</a>
+            <a href="login.html" class="btn btn-secondary">Login</a>
+            <a href="signin.html" id="signUp" class="btn btn-primary">Sign Up →</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Welcome to <span class="gradient-text">GenMail</span></h1>
+        <p>Revolutionize your email communication with AI-powered precision and efficiency</p>
+        <div class="cta-buttons">
+            <a href="./cold_email_generator.html" class="btn btn-primary btn-cta">Start Generating ✨</a>
+            <a href="#demo" class="btn btn-demo btn-cta">Watch Demo →</a>
+        </div>
+    </section>
+
+    <section class="features-section" id="features">
+        <h2>Why Choose GenMail?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <h3>Lightning Fast</h3>
+                <p>Generate professional emails in seconds, saving you valuable time and effort.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                    </svg>
+                </div>
+                <h3>AI-Powered Precision</h3>
+                <p>Leverage cutting-edge AI to craft perfectly tailored emails for any situation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+                <h3>Secure & Private</h3>
+                <p>Your data is protected with state-of-the-art encryption and privacy measures.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100" height="100" fill="#0078D7">
+                        <!-- Microphone Head -->
+                        <rect x="20" y="5" width="24" height="32" rx="12" ry="12" />
+                        
+                        <!-- Microphone Body -->
+                        <rect x="26" y="37" width="12" height="14" rx="6" ry="6" />
+                        
+                        <!-- Stand -->
+                        <line x1="32" y1="51" x2="32" y2="59" stroke="#0078D7" stroke-width="4" stroke-linecap="round" />
+                        
+                        <!-- Base -->
+                        <ellipse cx="32" cy="61" rx="10" ry="2" />
+                      </svg>
+                      
+                </div>
+                <h3>Tone Optimizaton</h3>
+                <p>Option for adjusting tone to be more formal, informal, friendly or persuasive.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" fill="#0078D7">
+                        <!-- Central Circle -->
+                        <circle cx="100" cy="100" r="30" fill="#0078D7" />
+                      
+                        <!-- Outer Connections -->
+                        <circle cx="50" cy="50" r="15" fill="#0078D7" />
+                        <circle cx="150" cy="50" r="15" fill="#0078D7" />
+                        <circle cx="50" cy="150" r="15" fill="#0078D7" />
+                        <circle cx="150" cy="150" r="15" fill="#0078D7" />
+                      
+                        <!-- Connecting Lines -->
+                        <line x1="100" y1="70" x2="50" y2="50" stroke="#0078D7" stroke-width="6" />
+                        <line x1="100" y1="70" x2="150" y2="50" stroke="#0078D7" stroke-width="6" />
+                        <line x1="100" y1="130" x2="50" y2="150" stroke="#0078D7" stroke-width="6" />
+                        <line x1="100" y1="130" x2="150" y2="150" stroke="#0078D7" stroke-width="6" />
+                        <line x1="50" y1="50" x2="50" y2="150" stroke="#0078D7" stroke-width="6" />
+                        <line x1="150" y1="50" x2="150" y2="150" stroke="#0078D7" stroke-width="6" />
+                      
+                        <!-- Central Icon (Integration Symbol) -->
+                        <path d="M90,95 L110,105 M90,105 L110,95" stroke="#ffffff" stroke-width="5" stroke-linecap="round" />
+                        <circle cx="100" cy="100" r="10" fill="#ffffff" />
+                      </svg>
+                      
+                </div>
+                <h3>All In One Platfoem</h3>
+                <p>Discover seamless job opportunities with our integrated
+                    job portal, allowing users to easily search for jobs and apply via email.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100" height="100" fill="#0078D7">
+                        <!-- Outer Envelope -->
+                        <rect x="8" y="16" width="48" height="32" rx="4" ry="4" fill="#0078D7" />
+                      
+                        <!-- Envelope Flap -->
+                        <polygon points="8,16 32,32 56,16" fill="#0078D7" />
+                      
+                        <!-- Inner Lines -->
+                        <line x1="8" y1="16" x2="32" y2="40" stroke="#ffffff" stroke-width="2" />
+                        <line x1="56" y1="16" x2="32" y2="40" stroke="#ffffff" stroke-width="2" />
+                      </svg>
+                      
+                      
+                </div>
+                <h3>Sample Emails</h3>
+                <p>Offers sample emails in every tone, helping USERS 
+                    visualize and choose the perfect tone for their message.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="transform-section">
+        <h2>Ready to Transform Your Email Game?</h2>
+        <p>Join thousands of professionals who are already using GenMail to supercharge their communication.</p>
+        <a href="signin.html" class="btn btn-primary btn-cta">Get Started for Free →</a>
+    </section>
+    <section id="contact">
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Product</h3>
+                    <a href="#features">Features</a>
+                    <a href="#pricing">Pricing</a>
+                    <a href="#use-cases">Use Cases</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <a href="#about">About Us</a>
+                    <a href="#careers">Careers</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <a href="#blog">Blog</a>
+                    <a href="#help">Help Center</a>
+                    <a href="#api">API Docs</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <a href="#privacy">Privacy Policy</a>
+                    <a href="#terms">Terms of Service</a>
+                    <a href="#cookie">Cookie Policy</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 GenMail. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#facebook" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <path
+                                d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
+                        </svg>
+                    </a>
+                    <a href="#twitter" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <path
+                                d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                        </svg>
+                    </a>
+                    <a href="#github" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <path
+                                d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.137 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <script>
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add navbar scroll effect
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(10, 11, 20, 0.95)';
+                navbar.style.backdropFilter = 'blur(5px)';
+            } else {
+                navbar.style.background = 'transparent';
+                navbar.style.backdropFilter = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
