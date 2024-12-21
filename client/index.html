@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,7 +46,8 @@
             transition: all 0.3s ease;
         }
 
-        h1, h2 {
+        h1,
+        h2 {
             font-size: 24px;
             font-weight: 600;
             margin-bottom: 20px;
@@ -95,11 +97,17 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
-        #userDetails, #result {
+        #userDetails,
+        #result {
             display: none;
         }
 
@@ -148,7 +156,8 @@
             color: #666;
         }
 
-        .form-group input, .form-group textarea {
+        .form-group input,
+        .form-group textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #E0E0E0;
@@ -177,15 +186,19 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div id="loading">
             <div class="spinner"></div>
             <p>Fetching User Details...</p>
-            <br/>
+            <br />
         </div>
         <div id="userDetails" class="card">
-            <h2>Your Details</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Your Details</h2>
+                <button onclick="signout()" style="width: 150px;">Sign-out</button>
+            </div>
             <div class="user-info">
                 <!-- User details will be here -->
             </div>
@@ -209,9 +222,20 @@
                 <input type="text" id="company" placeholder="Enter company name">
             </div>
             <div class="form-group">
-                <label for="additionalInfo">Additional Information</label>
-                <textarea id="additionalInfo" placeholder="Enter any additional information you'd like to include in the email"></textarea>
+                <label for="tone">Tone</label>
+                <select id="tone">
+                    <option value="formal">Formal</option>
+                    <option value="friendly">Friendly</option>
+                    <option value="informal">Informal</option>
+                    <option value="persuasive">Persuasive</option>
+                </select>
             </div>
+            <div class="form-group">
+                <label for="additionalInfo">Additional Information</label>
+                <textarea id="additionalInfo"
+                    placeholder="Enter any additional information you'd like to include in the email"></textarea>
+            </div>
+
             <button id="generateBtn">Generate Email</button>
         </div>
         <div id="result" class="card">
@@ -222,10 +246,10 @@
 
     <script>
         // Fetch user data on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const localUser = JSON.parse(localStorage.getItem('user'));
             const token = localStorage.getItem('token');
-            
+
             if (localUser && token) {
                 document.getElementById('loading').style.display = 'block';
                 console.log("User data:", localUser);
@@ -236,24 +260,24 @@
         function fetchUserData(userId, token) {
             const localUser = JSON.parse(localStorage.getItem('user'));
             if (localUser) {
-            const { id, password, createdAt, updatedAt, ...filteredUser } = localUser;
-            console.log('User data:', filteredUser);
-            displayUserDetails(filteredUser);
-            document.getElementById('loading').style.display = 'none';
+                const { id, password, createdAt, updatedAt, ...filteredUser } = localUser;
+                console.log('User data:', filteredUser);
+                displayUserDetails(filteredUser);
+                document.getElementById('loading').style.display = 'none';
             } else {
-            console.error('No user data found in local storage.');
-            document.getElementById('loading').style.display = 'none';
+                console.error('No user data found in local storage.');
+                document.getElementById('loading').style.display = 'none';
             }
         }
 
-        document.getElementById('generateBtn').addEventListener('click', function() {
+        document.getElementById('generateBtn').addEventListener('click', function () {
             this.disabled = true;
             document.getElementById('loading').style.display = 'block';
             document.getElementById('result').style.display = 'none';
-            
+
             const localUser = JSON.parse(localStorage.getItem('user'));
             const token = localStorage.getItem('token');
-            
+
             if (localUser && token) {
                 fetch(`http://localhost:3000/api/user?id=${localUser.id}`, {
                     method: 'GET',
@@ -262,16 +286,16 @@
                         'Authorization': `Bearer ${token}`
                     }
                 })
-                .then(response => response.json())
-                .then(userData => {
-                    console.log('User data:', userData);
-                    generateEmail(userData.user);
-                })
-                .catch(error => {
-                    console.error('Error fetching user data:', error);
-                    this.disabled = false;
-                    document.getElementById('loading').style.display = 'none';
-                });
+                    .then(response => response.json())
+                    .then(userData => {
+                        console.log('User data:', userData);
+                        generateEmail(userData.user);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching user data:', error);
+                        this.disabled = false;
+                        document.getElementById('loading').style.display = 'none';
+                    });
             }
         });
 
@@ -292,12 +316,13 @@
             const recipientPosition = document.getElementById('recipientPosition').value || data.position || '';
             const company = document.getElementById('company').value || data.company || 'Your Company';
             const additionalInfo = document.getElementById('additionalInfo').value || '';
+            const tone = document.getElementById('tone').value || 'formal';
 
-            console.log("data is : ",data);
+            console.log("data is : ", data);
 
             const details = JSON.parse(localStorage.getItem('user'));
 
-            console.log("details is : ",details);
+            console.log("details is : ", details);
 
 
 
@@ -312,15 +337,16 @@
             Recipient's Name: ${recipientName}
             Recipient's Position: ${recipientPosition}
             Additional Information: ${additionalInfo}
+            keeping a ${tone} tone throughout the mail.
 
             The email should be concise, highlight the student's relevant skills, experiences, and any additional information provided. Use a tone that is respectful and appropriate for Indian business culture.
             Dont add phone number or any other details in the email which are not provided in the form.
             Dont put details in [] brackets in the email.
             `;
-            
+
             console.log('Prompt:', prompt);
 
-            const apiKey = 'AIzaSyAz8stH7N5ErLg8A0mBgFVE49_ObcxSqYI';
+            
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
             fetch(apiUrl, {
@@ -334,23 +360,23 @@
                     }]
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                const generatedText = data.candidates[0].content.parts[0].text;
-                document.getElementById('generatedEmail').textContent = generatedText;
-                document.getElementById('result').style.display = 'block';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('generatedEmail').textContent = 'An error occurred while generating the email. Please try again.';
-                document.getElementById('result').style.display = 'block';
-            })
-            .finally(() => {
-                document.getElementById('generateBtn').disabled = false;
-                document.getElementById('loading').style.display = 'none';
-            });
+                .then(response => response.json())
+                .then(data => {
+                    const generatedText = data.candidates[0].content.parts[0].text;
+                    document.getElementById('generatedEmail').textContent = generatedText;
+                    document.getElementById('result').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('generatedEmail').textContent = 'An error occurred while generating the email. Please try again.';
+                    document.getElementById('result').style.display = 'block';
+                })
+                .finally(() => {
+                    document.getElementById('generateBtn').disabled = false;
+                    document.getElementById('loading').style.display = 'none';
+                });
         }
     </script>
 </body>
-</html>
 
+</html>
