@@ -46,8 +46,7 @@
             transition: all 0.3s ease;
         }
 
-        h1,
-        h2 {
+        h1, h2 {
             font-size: 24px;
             font-weight: 600;
             margin-bottom: 20px;
@@ -97,17 +96,11 @@
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        #userDetails,
-        #result {
+        #userDetails, #result {
             display: none;
         }
 
@@ -157,7 +150,8 @@
         }
 
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 10px;
             border: 1px solid #E0E0E0;
@@ -168,6 +162,32 @@
         .form-group textarea {
             min-height: 100px;
             resize: vertical;
+        }
+
+        #editForm {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #editForm input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #E0E0E0;
+            border-radius: var(--border-radius);
+        }
+
+        #editForm button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        #editForm button:hover {
+            background-color: #0056b3;
         }
 
         @media (max-width: 600px) {
@@ -198,10 +218,19 @@
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2>Your Details</h2>
                 <button onclick="signout()" style="width: 150px;">Sign-out</button>
+                <button id="editBtn" style="width: fit-content; background-color: #007AFF;">Edit</button>
             </div>
             <div class="user-info">
                 <!-- User details will be here -->
             </div>
+            <form id="editForm">
+                <input type="text" id="editName" placeholder="Name">
+                <input type="text" id="editCollege" placeholder="College">
+                <input type="text" id="editBranch" placeholder="Branch">
+                <input type="text" id="editYear" placeholder="Year">
+                <input type="text" id="editSkills" placeholder="Skills">
+                <button type="submit">Save Changes</button>
+            </form>
         </div>
         <div class="card">
             <h1>Cold Email Generator for Indian Students</h1>
@@ -232,8 +261,7 @@
             </div>
             <div class="form-group">
                 <label for="additionalInfo">Additional Information</label>
-                <textarea id="additionalInfo"
-                    placeholder="Enter any additional information you'd like to include in the email"></textarea>
+                <textarea id="additionalInfo" placeholder="Enter any additional information you'd like to include in the email"></textarea>
             </div>
 
             <button id="generateBtn">Generate Email</button>
@@ -246,7 +274,6 @@
     </div>
 
     <script>
-        // Fetch user data on page load
         document.addEventListener('DOMContentLoaded', function () {
             const localUser = JSON.parse(localStorage.getItem('user'));
             const token = localStorage.getItem('token');
@@ -256,6 +283,23 @@
                 console.log("User data:", localUser);
                 fetchUserData(localUser.id, token);
             }
+
+            document.getElementById('editBtn').addEventListener('click', function() {
+                const editForm = document.getElementById('editForm');
+                if (editForm.style.display === 'none') {
+                    editForm.style.display = 'block';
+                    this.textContent = 'Cancel';
+                    populateEditForm();
+                } else {
+                    editForm.style.display = 'none';
+                    this.textContent = 'Edit';
+                }
+            });
+
+            document.getElementById('editForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                updateUserDetails();
+            });
         });
 
         function fetchUserData(userId, token) {
@@ -271,44 +315,64 @@
             }
         }
 
+        function displayUserDetails(data) {
+            const userInfoDiv = document.querySelector('.user-info');
+            userInfoDiv.innerHTML = '';
+            const excludedFields = ['id', 'password', 'createdAt', 'updatedAt'];
+            for (const [key, value] of Object.entries(data)) {
+                if (!excludedFields.includes(key)) {
+                    const div = document.createElement('div');
+                    div.innerHTML = `<h3>${key.charAt(0).toUpperCase() + key.slice(1)}</h3><p>${value}</p>`;
+                    userInfoDiv.appendChild(div);
+                }
+            }
+            document.getElementById('userDetails').style.display = 'block';
+        }
+
         document.getElementById('generateBtn').addEventListener('click', function () {
             this.disabled = true;
             document.getElementById('loading').style.display = 'block';
             document.getElementById('result').style.display = 'none';
 
             const localUser = JSON.parse(localStorage.getItem('user'));
-            const token = localStorage.getItem('token');
-
-            if (localUser && token) {
-                fetch(`http://localhost:3000/api/user?id=${localUser.id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                    .then(response => response.json())
-                    .then(userData => {
-                        console.log('User data:', userData);
-                        generateEmail(userData.user);
-                    })
-                    .catch(error => {
-                        console.error('Error fetching user data:', error);
-                        this.disabled = false;
-                        document.getElementById('loading').style.display = 'none';
-                    });
+            if (localUser) {
+                console.log('User data:', localUser);
+                generateEmail(localUser);
+            } else {
+                console.error('No user data found in local storage.');
+                this.disabled = false;
+                document.getElementById('loading').style.display = 'none';
             }
         });
 
-        function displayUserDetails(data) {
-            const userInfoDiv = document.querySelector('.user-info');
-            userInfoDiv.innerHTML = '';
-            for (const [key, value] of Object.entries(data)) {
-                const div = document.createElement('div');
-                div.innerHTML = `<h3>${key.charAt(0).toUpperCase() + key.slice(1)}</h3><p>${value}</p>`;
-                userInfoDiv.appendChild(div);
-            }
-            document.getElementById('userDetails').style.display = 'block';
+        function populateEditForm() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            document.getElementById('editName').value = user.name || '';
+            document.getElementById('editCollege').value = user.college || '';
+            document.getElementById('editBranch').value = user.Branch || '';
+            document.getElementById('editYear').value = user.Year || '';
+            document.getElementById('editSkills').value = user.Skills || '';
+        }
+
+        function updateUserDetails() {
+            const updatedUser = {
+                name: document.getElementById('editName').value,
+                college: document.getElementById('editCollege').value,
+                Branch: document.getElementById('editBranch').value,
+                Year: document.getElementById('editYear').value,
+                Skills: document.getElementById('editSkills').value
+            };
+
+            const user = JSON.parse(localStorage.getItem('user'));
+            const updatedUserData = { ...user, ...updatedUser };
+
+            localStorage.setItem('user', JSON.stringify(updatedUserData));
+            
+            document.getElementById('editForm').style.display = 'none';
+            document.getElementById('editBtn').textContent = 'Edit';
+            displayUserDetails(updatedUserData);
+
+            console.log('User details updated in local storage:', updatedUserData);
         }
 
         function signout() {
@@ -318,37 +382,31 @@
         }
 
         document.getElementById('copyBtn').addEventListener('click', function () {
-                const emailContent = document.getElementById('generatedEmail').innerText;
-                navigator.clipboard.writeText(emailContent).then(function () {
-                    alert('Email copied to clipboard!');
-                }, function (err) {
-                    console.error('Could not copy text: ', err);
-                });
+            const emailContent = document.getElementById('generatedEmail').innerText;
+            navigator.clipboard.writeText(emailContent).then(function () {
+                alert('Email copied to clipboard!');
+            }, function (err) {
+                console.error('Could not copy text: ', err);
+            });
         });
 
         function generateEmail(data) {
             const experience = document.getElementById('experience').value || 'N/A';
-            const recipientName = document.getElementById('recipientName').value || data.recipient || 'Hiring Manager';
-            const recipientPosition = document.getElementById('recipientPosition').value || data.position || '';
-            const company = document.getElementById('company').value || data.company || 'Your Company';
+            const recipientName = document.getElementById('recipientName').value || 'Hiring Manager';
+            const recipientPosition = document.getElementById('recipientPosition').value || '';
+            const company = document.getElementById('company').value || 'Your Company';
             const additionalInfo = document.getElementById('additionalInfo').value || '';
             const tone = document.getElementById('tone').value || 'formal';
 
-            console.log("data is : ", data);
-
-            const details = JSON.parse(localStorage.getItem('user'));
-
-            console.log("details is : ", details);
-
-
+            console.log("User data for email generation:", data);
 
             const prompt = `Generate a professional cold email for an Indian college student with the following details:
-            Student Name: ${details.name}
-            College: ${details.college}
-            Branch: ${details.Branch}
-            Year of Study: ${details.Year}
+            Student Name: ${data.name}
+            College: ${data.college}
+            Branch: ${data.Branch}
+            Year of Study: ${data.Year}
             Years of Experience: ${experience}
-            Skills: ${details.Skills}
+            Skills: ${data.Skills}
             Company Name: ${company}
             Recipient's Name: ${recipientName}
             Recipient's Position: ${recipientPosition}
@@ -356,18 +414,19 @@
             keeping a ${tone} tone throughout the mail.
 
             The email should be concise, highlight the student's relevant skills, experiences, and any additional information provided. Use a tone that is respectful and appropriate for Indian business culture.
-            Dont add phone number or any other details in the email which are not provided in the form.
-            Dont put details in [] brackets in the email.
+            Don't add phone number or any other details in the email which are not provided in the form.
+            Don't put details in [] brackets in the email.
             `;
 
             console.log('Prompt:', prompt);
-
+            
+            
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
             fetch(apiUrl, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'applicatwwion/json',
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     contents: [{
@@ -395,3 +454,4 @@
 </body>
 
 </html>
+
