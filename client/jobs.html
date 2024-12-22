@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenMail Job Listings</title>
+    <link rel="stylesheet" href="jobs.css">
+</head>
+<body>
+    <div class="container">
+        <h1>GenMail Job Listings</h1>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search jobs...">
+            <select id="job-type">
+                <option value="">All Types</option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
+            </select>
+            <select id="experience">
+                <option value="">All Levels</option>
+                <option value="Entry">Entry</option>
+                <option value="Mid">Mid</option>
+                <option value="Senior">Senior</option>
+            </select>
+            <button id="search-button">Search</button>
+        </div>
+        <div id="job-list" class="job-list"></div>
+    </div>
+    <script src="jobs.js"></script>
+</body>
+</html>

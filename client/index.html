@@ -46,7 +46,8 @@
             transition: all 0.3s ease;
         }
 
-        h1, h2 {
+        h1,
+        h2 {
             font-size: 24px;
             font-weight: 600;
             margin-bottom: 20px;
@@ -96,11 +97,17 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
-        #userDetails, #result {
+        #userDetails,
+        #result {
             display: none;
         }
 
@@ -261,7 +268,8 @@
             </div>
             <div class="form-group">
                 <label for="additionalInfo">Additional Information</label>
-                <textarea id="additionalInfo" placeholder="Enter any additional information you'd like to include in the email"></textarea>
+                <textarea id="additionalInfo"
+                    placeholder="Enter any additional information you'd like to include in the email"></textarea>
             </div>
 
             <button id="generateBtn">Generate Email</button>
@@ -284,7 +292,7 @@
                 fetchUserData(localUser.id, token);
             }
 
-            document.getElementById('editBtn').addEventListener('click', function() {
+            document.getElementById('editBtn').addEventListener('click', function () {
                 const editForm = document.getElementById('editForm');
                 if (editForm.style.display === 'none') {
                     editForm.style.display = 'block';
@@ -296,7 +304,7 @@
                 }
             });
 
-            document.getElementById('editForm').addEventListener('submit', function(e) {
+            document.getElementById('editForm').addEventListener('submit', function (e) {
                 e.preventDefault();
                 updateUserDetails();
             });
@@ -367,7 +375,7 @@
             const updatedUserData = { ...user, ...updatedUser };
 
             localStorage.setItem('user', JSON.stringify(updatedUserData));
-            
+
             document.getElementById('editForm').style.display = 'none';
             document.getElementById('editBtn').textContent = 'Edit';
             displayUserDetails(updatedUserData);
@@ -400,6 +408,7 @@
 
             console.log("User data for email generation:", data);
 
+
             const prompt = `Generate a professional cold email for an Indian college student with the following details:
             Student Name: ${data.name}
             College: ${data.college}
@@ -419,7 +428,7 @@
             `;
 
             console.log('Prompt:', prompt);
-            
+
             
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
@@ -454,4 +463,3 @@
 </body>
 
 </html>
-

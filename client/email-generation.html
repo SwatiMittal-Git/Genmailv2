@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenMail - Email Generation</title>
+    <style>
+        .email-generation {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .email-generation h1 {
+            text-align: left;
+        }
+        .email-form textarea {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .email-form button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .email-form button:hover {
+            background-color: #555;
+        }
+        #loading {
+            display: none;
+            margin-top: 10px;
+        }
+        #userDetails, #jobDetails {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="email-generation">
+            <h1>Generate Email for Job Application</h1>
+            <div id="userDetails"></div>
+            <div id="jobDetails"></div>
+            <button id="generateBtn" style="background-color:rgb(46, 102, 223); padding: 10px; border-radius: 10px; ">Generate Email</button>
+            <div class="email-form">
+                <h2>Generated Email</h2>
+                <textarea id="generatedEmail" readonly></textarea>
+                
+                <div id="loading">Generating email...</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const storedJob = JSON.parse(localStorage.getItem('selectedJob'));
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+
+        function displayDetails() {
+            const userDetailsElement = document.getElementById('userDetails');
+            const jobDetailsElement = document.getElementById('jobDetails');
+
+            if (storedUser) {
+                userDetailsElement.innerHTML = `
+                    <h2>User Details</h2>
+                    <p><strong>Name:</strong> ${storedUser.name || 'N/A'}</p>
+                    <p><strong>College:</strong> ${storedUser.college || 'N/A'}</p>
+                    <p><strong>Branch:</strong> ${storedUser.Branch || 'N/A'}</p>
+                    <p><strong>Year of Study:</strong> ${storedUser.Year || 'N/A'}</p>
+                    <p><strong>Skills:</strong> ${storedUser.Skills || 'N/A'}</p>
+                `;
+            } else {
+                userDetailsElement.innerHTML = '<p>No user data found.</p>';
+            }
+
+            if (storedJob) {
+                jobDetailsElement.innerHTML = `
+                    <h2>Job Details</h2>
+                    <p><strong>Title:</strong> ${storedJob.title}</p>
+                    <p><strong>Company:</strong> ${storedJob.company}</p>
+                    <p><strong>Location:</strong> ${storedJob.location}</p>
+                    <p><strong>Type:</strong> ${storedJob.type}</p>
+                    <p><strong>Experience Level:</strong> ${storedJob.experience}</p>
+                    <p><strong>Description:</strong> ${storedJob.description}</p>
+                `;
+            } else {
+                jobDetailsElement.innerHTML = '<p>No job data found.</p>';
+            }
+        }
+
+        displayDetails();
+
+        document.getElementById('generateBtn').addEventListener('click', generateEmail);
+        console.log("storedJob", storedJob);
+        console.log("storedUser", storedUser);
+
+        function generateEmail() {
+            if (!storedJob || !storedUser) {
+                alert('Missing job or user data. Please go back and select a job.');
+                return;
+            }
+
+            const prompt = `Generate a professional cold email for an Indian college student with the following details:
+            Student Name: ${storedUser.name || 'N/A'}
+            College: ${storedUser.college || 'N/A'}
+            Branch: ${storedUser.Branch || 'N/A'}
+            Year of Study: ${storedUser.Year|| 'N/A'}
+            Skills: ${storedUser.Skills || 'N/A'}
+            Company Name: ${storedJob.company}
+            Job Title: ${storedJob.title}
+            Job Description: ${storedJob.description}
+            keeping a professional tone throughout the mail.
+
+            use the platform , where the job was listed  name as GenMail.
+
+
+            The email should:
+            1. Be concise and professional, highlighting the student's relevant skills and experiences.
+            2. Clearly show how the student's skills align with the job description.
+            3. Maintain a respectful and culturally appropriate tone for Indian business settings.
+            4. Avoid including placeholders, instructions, or bracketed text (e.g., [List at least one relevant skill if known]).
+            5. Contain only finalized content that is ready to be sent as is.
+
+            Ensure that the email includes only the information provided in the stored data and excludes unnecessary personal details like phone numbers unless explicitly given.
+            `;
+
+            console.log('Prompt:', prompt);
+
+            document.getElementById('generateBtn').disabled = true;
+            document.getElementById('loading').style.display = 'block';
+
+     
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: prompt }]
+                    }]
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const generatedText = data.candidates[0].content.parts[0].text;
+                    document.getElementById('generatedEmail').value = generatedText;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('generatedEmail').value = 'An error occurred while generating the email. Please try again.';
+                })
+                .finally(() => {
+                    document.getElementById('generateBtn').disabled = false;
+                    document.getElementById('loading').style.display = 'none';
+                });
+        }
+    </script>
+</body>
+</html>
