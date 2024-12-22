@@ -13,8 +13,8 @@
         }
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
+            background-color: #0a0a0a;
+            color: #fff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -24,18 +24,21 @@
         .container {
             max-width: 450px;
             width: 100%;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: #111111;
             padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin: 0 auto;
         }
         h1 {
             text-align: center;
-            color: #4a5568;
+            color: #fff;
             margin-bottom: 30px;
             font-size: 28px;
             font-weight: 600;
+        }
+        h1 span {
+            color: #007bff;
         }
         form {
             display: flex;
@@ -51,21 +54,23 @@
         label {
             font-size: 14px;
             font-weight: 500;
-            color: #4a5568;
+            color: #8b8b8b;
             margin-bottom: 8px;
         }
         input, select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
             font-size: 16px;
+            color: #fff;
             transition: border-color 0.3s ease;
         }
         input:focus, select:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
         }
         .skills-container {
             width: 100%;
@@ -79,14 +84,18 @@
             flex: 1;
         }
         #addSkill {
-            background-color: #48bb78;
-            color: white;
-            border: none;
+            background-color: #1a1a1a;
+            color: #fff;
+            border: 1px solid #333;
             padding: 8px 16px;
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
             white-space: nowrap;
+            transition: background-color 0.3s ease;
+        }
+        #addSkill:hover {
+            background-color: #333;
         }
         #skillsList {
             list-style-type: none;
@@ -97,26 +106,27 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #e2e8f0;
+            background-color: #1a1a1a;
             padding: 8px 12px;
             margin-bottom: 8px;
-            border-radius: 8px;
+            border-radius: 4px;
+            border: 1px solid #333;
         }
         #skillsList li button {
-            background-color: #fc8181;
-            color: white;
-            border: none;
+            background-color: #1a1a1a;
+            color: #ff4444;
+            border: 1px solid #ff4444;
             padding: 4px 8px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
         }
         button[type="submit"] {
-            background-color: #667eea;
+            background-color: #007bff;
             color: white;
             border: none;
             padding: 14px;
-            border-radius: 8px;
+            border-radius: 4px;
             font-size: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -125,21 +135,28 @@
             margin-top: 10px;
         }
         button[type="submit"]:hover {
-            background-color: #5a67d8;
-            transform: translateY(-1px);
+            background-color: #0056b3;
         }
         .toggle {
             text-align: center;
             margin-top: 20px;
             font-size: 14px;
+            color: #8b8b8b;
         }
         .toggle span {
-            color: #667eea;
+            color: #007bff;
             cursor: pointer;
+            text-decoration: none;
+        }
+        .toggle span:hover {
             text-decoration: underline;
         }
         .signup-fields {
             display: none;
+        }
+        select option {
+            background-color: #1a1a1a;
+            color: #fff;
         }
     </style>
 </head>

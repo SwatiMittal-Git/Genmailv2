@@ -7,11 +7,12 @@
     <title>Cold Email Generator for Indian Students</title>
     <style>
         :root {
-            --primary-color: #007AFF;
-            --background-color: #F2F2F7;
-            --card-background: #FFFFFF;
-            --text-color: #1C1C1E;
-            --border-radius: 10px;
+            --primary-color: #0066FF;
+            --background-color: #0A0A0A;
+            --card-background: #1A1A1A;
+            --text-color: #FFFFFF;
+            --text-secondary: #8B8B8B;
+            --border-radius: 8px;
         }
 
         * {
@@ -25,58 +26,96 @@
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.5;
-            padding: 20px;
             min-height: 100vh;
+        }
+
+        .navbar {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            padding: 1rem 2rem;
+            background-color: var(--card-background);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
         }
 
         .container {
-            max-width: 800px;
-            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
         }
 
         .card {
             background-color: var(--card-background);
             border-radius: var(--border-radius);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
+            padding: 2rem;
+            margin-bottom: 2rem;
         }
 
-        h1,
-        h2 {
-            font-size: 24px;
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        h1, h2 {
+            font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        h2 {
-            font-size: 20px;
+            margin-bottom: 1.5rem;
         }
 
         button {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 20px;
-            font-size: 16px;
-            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
         }
 
         button:hover {
-            background-color: #0056b3;
+            opacity: 0.9;
         }
 
         button:disabled {
-            background-color: #B0B0B0;
+            background-color: #404040;
             cursor: not-allowed;
         }
 
@@ -84,10 +123,11 @@
             display: none;
             text-align: center;
             margin-top: 20px;
+            color: var(--text-secondary);
         }
 
         .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
+            border: 4px solid rgba(255, 255, 255, 0.1);
             border-left-color: var(--primary-color);
             border-radius: 50%;
             width: 30px;
@@ -97,118 +137,81 @@
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        #userDetails,
-        #result {
-            display: none;
-        }
-
-        .user-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .user-info div {
-            background-color: #F8F8F8;
-            padding: 15px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .user-info h3 {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .user-info p {
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        #generatedEmail {
-            white-space: pre-wrap;
-            font-size: 14px;
-            line-height: 1.6;
-            background-color: #F8F8F8;
-            padding: 15px;
-            border-radius: var(--border-radius);
-            border: 1px solid #E0E0E0;
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-            color: #666;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
         }
 
         .form-group input,
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #E0E0E0;
+            padding: 12px;
+            background-color: #2A2A2A;
+            border: 1px solid #404040;
             border-radius: var(--border-radius);
-            font-size: 14px;
+            color: var(--text-color);
+            font-size: 1rem;
         }
 
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
         }
 
-        #editForm {
-            display: none;
-            margin-top: 20px;
+        #generatedEmail {
+            white-space: pre-wrap;
+            font-size: 1rem;
+            line-height: 1.6;
+            background-color: #2A2A2A;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            min-height: 300px;
+            color: var(--text-color);
         }
 
-        #editForm input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #E0E0E0;
+        .nav-link {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 8px 16px;
             border-radius: var(--border-radius);
         }
 
-        #editForm button {
+        .nav-link.primary {
             background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
         }
 
-        #editForm button:hover {
-            background-color: #0056b3;
+        .nav-link:hover {
+            opacity: 0.9;
         }
 
-        @media (max-width: 600px) {
-            .card {
-                padding: 20px;
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
             }
 
-            h1 {
-                font-size: 20px;
+            .header h1 {
+                font-size: 2.5rem;
             }
 
-            button {
-                padding: 10px 16px;
-                font-size: 14px;
+            .navbar {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
             }
         }
     </style>
@@ -429,7 +432,7 @@
 
             console.log('Prompt:', prompt);
 
-            
+           
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
             fetch(apiUrl, {
