@@ -241,6 +241,7 @@
         <div id="result" class="card">
             <h2>Generated Cold Email</h2>
             <pre id="generatedEmail"></pre>
+            <button style="width: fit-content; align-items: center;" id="copyBtn">Copy Mail</button>
         </div>
     </div>
 
@@ -316,6 +317,15 @@
             window.location.href = 'signin.html';
         }
 
+        document.getElementById('copyBtn').addEventListener('click', function () {
+                const emailContent = document.getElementById('generatedEmail').innerText;
+                navigator.clipboard.writeText(emailContent).then(function () {
+                    alert('Email copied to clipboard!');
+                }, function (err) {
+                    console.error('Could not copy text: ', err);
+                });
+        });
+
         function generateEmail(data) {
             const experience = document.getElementById('experience').value || 'N/A';
             const recipientName = document.getElementById('recipientName').value || data.recipient || 'Hiring Manager';
@@ -352,7 +362,6 @@
 
             console.log('Prompt:', prompt);
 
-            
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
             fetch(apiUrl, {
