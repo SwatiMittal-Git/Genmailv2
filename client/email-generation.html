@@ -133,7 +133,7 @@
             document.getElementById('generateBtn').disabled = true;
             document.getElementById('loading').style.display = 'block';
 
-            
+            const apiKey = 'AIzaSyAz8stH7N5ErLg8A0mBgFVE49_ObcxSqYI';
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
             fetch(apiUrl, {
