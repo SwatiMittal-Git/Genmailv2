@@ -314,13 +314,25 @@
                 submitBtn.textContent = 'Sign Up';
                 toggleMode.textContent = "Already have an account? Log In";
                 signupFields.style.display = 'block';
-                newFields.forEach(field => field.style.display = 'block');
+                newFields.forEach(field => {
+            field.style.display = 'block';
+            // Enable required attributes on signup fields
+            field.querySelectorAll('[required]').forEach(input => {
+                input.required = true;
+            });
+        });
             } else {
                 formTitle.textContent = 'Log In';
                 submitBtn.textContent = 'Log In';
                 toggleMode.textContent = "Don't have an account? Sign Up";
                 signupFields.style.display = 'none';
-                newFields.forEach(field => field.style.display = 'none');
+                newFields.forEach(field => {
+            field.style.display = 'none';
+            // Disable required attributes on signup fields when in login mode
+            field.querySelectorAll('[required]').forEach(input => {
+                input.required = false;
+            });
+        });
             }
         }
 
