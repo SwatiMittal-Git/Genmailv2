@@ -30,6 +30,9 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin: 0 auto;
         }
+        .new {
+            display: none; 
+        }
         h1 {
             text-align: center;
             color: #fff;
@@ -158,6 +161,33 @@
             background-color: #1a1a1a;
             color: #fff;
         }
+
+        /* New styles for gender alignment and contact information */
+        .gender-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 8px;
+        }
+        .gender-option {
+            display: flex;
+            align-items: center;
+        }
+        .gender-option input[type="radio"] {
+            width: auto;
+            margin-right: 5px;
+        }
+        .contact-info {
+            background-color: rgba(0, 123, 255, 0.1);
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .contact-info h2 {
+            color: #007bff;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -177,6 +207,45 @@
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="contact-info new">
+                <h2>Contact Information</h2>
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" name="fullname" required>
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <div class="gender-group">
+                        <div class="gender-option">
+                            <input type="radio" id="male" name="gender" value="male" required>
+                            <label for="male">Male</label>
+                        </div>
+                        <div class="gender-option">
+                            <input type="radio" id="female" name="gender" value="female" required>
+                            <label for="female">Female</label>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" name="age" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Contact Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="nationality">Nationality</label>
+                    <select id="nationality" name="nationality" required>
+                        <option value="">Select Nationality</option>
+                        <option value="india">India</option>
+                        <option value="us">United States</option>
+                        <option value="uk">United Kingdom</option>
+                    </select>
+                </div>
             </div>
 
             <div class="signup-fields">
@@ -201,7 +270,6 @@
                         <option value="5">5th Year</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label for="skills">Skills</label>
                     <div class="skills-container">
@@ -234,6 +302,7 @@
         const skillInput = document.getElementById('skillInput');
         const addSkillBtn = document.getElementById('addSkill');
         const skillsList = document.getElementById('skillsList');
+        const newFields = document.querySelectorAll('.new');
 
         let isSignUp = true;
         let skills = [];
@@ -245,11 +314,13 @@
                 submitBtn.textContent = 'Sign Up';
                 toggleMode.textContent = "Already have an account? Log In";
                 signupFields.style.display = 'block';
+                newFields.forEach(field => field.style.display = 'block');
             } else {
                 formTitle.textContent = 'Log In';
                 submitBtn.textContent = 'Log In';
                 toggleMode.textContent = "Don't have an account? Sign Up";
                 signupFields.style.display = 'none';
+                newFields.forEach(field => field.style.display = 'none');
             }
         }
 
@@ -339,6 +410,10 @@
                 alert('An error occurred. Please try again later.');
             }
         });
+
+        // Initialize form mode to Sign Up
+        toggleFormMode();
     </script>
 </body>
 </html>
+
