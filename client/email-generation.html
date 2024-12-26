@@ -5,39 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GenMail - Email Generation</title>
     <style>
-        .email-generation {
-            background-color: #fff;
+        :root {
+            --background: #0B0B0F;
+            --card-background: #151519;
+            --primary: #0066FF;
+            --text: #FFFFFF;
+            --text-secondary: #64748b;
+            --border: #1f2937;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background);
+            color: var(--text);
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 40px auto;
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .email-generation {
+            background-color: var(--card-background);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
         }
         .email-generation h1 {
             text-align: left;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+        .email-generation h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text);
         }
         .email-form textarea {
             width: 100%;
             height: 300px;
             margin-bottom: 20px;
-            padding: 10px;
-            font-size: 16px;
+            padding: 1rem;
+            font-size: 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            color: var(--text);
+            resize: vertical;
         }
-        .email-form button {
-            background-color: #333;
-            color: #fff;
+        .email-form button, #generateBtn {
+            background-color: var(--primary);
+            color: var(--text);
             border: none;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
             cursor: pointer;
+            border-radius: 0.5rem;
+            transition: opacity 0.2s;
         }
-        .email-form button:hover {
-            background-color: #555;
+        .email-form button:hover, #generateBtn:hover {
+            opacity: 0.9;
         }
         #loading {
             display: none;
             margin-top: 10px;
+            color: var(--text-secondary);
         }
         #userDetails, #jobDetails {
             margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+        }
+        #userDetails p, #jobDetails p {
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+        #userDetails strong, #jobDetails strong {
+            color: var(--text);
         }
     </style>
 </head>
@@ -47,16 +98,16 @@
             <h1>Generate Email for Job Application</h1>
             <div id="userDetails"></div>
             <div id="jobDetails"></div>
-            <button id="generateBtn" style="background-color:rgb(46, 102, 223); padding: 10px; border-radius: 10px; ">Generate Email</button>
+            <button id="generateBtn">Generate Email</button>
             <div class="email-form">
                 <h2>Generated Email</h2>
                 <textarea id="generatedEmail" readonly></textarea>
-                
                 <div id="loading">Generating email...</div>
             </div>
         </div>
     </div>
     <script>
+        // The existing JavaScript code remains unchanged
         const storedJob = JSON.parse(localStorage.getItem('selectedJob'));
         const storedUser = JSON.parse(localStorage.getItem('user'));
 
